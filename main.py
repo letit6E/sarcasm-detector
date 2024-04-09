@@ -1,17 +1,13 @@
 import streamlit as st
-import random
-import time
+import worker
 
 def detect_sarcasm(text):
-    """
-    Mock detector
-    """
-    time.sleep(2)
-    return random.choice([True, False])
+    return bool(worker.detect(text))
 
 def main():
-    st.title("Sarcasm detector")
+    worker.prepare_data()
 
+    st.title("Sarcasm detector")
     text = st.text_area("Enter the text to analyze:")
 
     if st.button("Analyze"):
