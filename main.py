@@ -1,11 +1,18 @@
 import streamlit as st
+import nltk
 import worker
 
 def detect_sarcasm(text):
+
     return bool(worker.detect(text))
 
 def main():
-    worker.prepare_data()
+
+    if not nltk.data.find('corpora/stopwords.zip'):
+        nltk.download('stopwords')
+
+    if not nltk.data.find('tokenizers/punkt'):
+        nltk.download('punkt')
 
     st.title("Sarcasm detector")
     text = st.text_area("Enter the text to analyze:")

@@ -1,19 +1,19 @@
 import re
-import nltk
 import string
 import zipfile
 import os.path
-from joblib import load
+import numpy as np
+import onnxruntime as rt
 from nltk.corpus import stopwords
 from nltk.tokenize import TweetTokenizer
 
-def prepare_data():
-    nltk.download('stopwords')
-    nltk.download('punkt')
+if not os.path.isfile('models/log_reg.onnx'):
+    with zipfile.ZipFile('models/log_reg.zip', 'r') as zip_ref:
+        zip_ref.extractall('models')
 
-    if not os.path.isfile('models/tfidf_vectorizer.pkl'):
-        with zipfile.ZipFile('models/tfidf_vectorizer.zip', 'r') as zip_ref:
-            zip_ref.extractall('models')
+sess = rt.InferenceSession("models/log_reg.onnx")
+input_name = sess.get_inputs()[0].name
+output_name = sess.get_outputs()[0].name
 
 def preprocess(text:str):
     text = re.sub('[?!]+',' featuremark ',text)
@@ -29,9 +29,9 @@ def preprocess(text:str):
     words = [word for word in words if word not in sw]
     preprocessed_text = ' '.join(words)
 
-    tfidf = load('models/tfidf_vectorizer.pkl')
-    return tfidf.transform([preprocessed_text])
+    return preprocessed_text
 
 def detect(text):
-    model = load('models/LogReg.joblib')
-    return model.predict(preprocess(text))
+    input = np.array(preprocess(text)).reshape(-1,1)
+    result = sess.run([output_name], {input_name: input})
+    return result[0]
