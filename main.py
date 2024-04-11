@@ -2,12 +2,13 @@ import streamlit as st
 import random
 import time
 
+from models.LogReg_bow_pred import LogReg_bow_pred
+
+
 def detect_sarcasm(text):
-    """
-    Mock detector
-    """
-    time.sleep(2)
-    return random.choice([True, False])
+
+    return LogReg_bow_pred(text)
+
 
 def main():
     st.title("Sarcasm detector")
@@ -21,6 +22,7 @@ def main():
                 st.success("Sarcasm detected!")
             else:
                 st.error("Sarcam is not detected!")
+
 
 if __name__ == "__main__":
     main()
