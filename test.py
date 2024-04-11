@@ -16,12 +16,21 @@ def ballons():
 PAGE_CONFIGURATION = {"page_title":"Моя 2-страницная страница","page_icon":":smile:","layout":"centered"}
 st.set_page_config(**PAGE_CONFIGURATION)
 
-def detect_sarcasm(text):
-    """
-    Mock detector
-    """
-    time.sleep(2)
-    return random.choice([True, False])
+def preprocess(text):
+        new_text = [
+        ]
+        for t in text.split(" "):
+            t = '@user' if t.startswith('@') and len(t) > 1 else t
+            t = 'http' if t.startswith('http') else t
+            new_text.append(t)
+        return " ".join(new_text)
+
+def detect_sarcasm(text, model, tokenizer):
+    tokenized_text = tokenizer([preprocess(text)], padding=True, truncation=True, max_length=4096, return_tensors="pt")
+    output = model(**tokenized_text)
+    probs = output.logits.softmax(dim=-1).tolist()[0]
+    prediction = 1 if probs[0] < 0.5 else 0
+    return bool(prediction)
 
 def main_page():
       st.subheader("Главная")
@@ -66,19 +75,25 @@ def eda_page():
          st.pyplot(fig)
 
 def main():
-   with st.sidebar:
-    selected = option_menu(
-    menu_title = "Main Menu",
-    options = ["Home","Analysis"],
-    icons = ["house","activity"],
-    menu_icon = "cast",
-    default_index = 0,
-    #orientation = "horizontal",
-   )  
+    from transformers import AutoTokenizer, AutoModelForSequenceClassification
+    import re
 
-   if selected=="Home":
-       main_page()
-   if selected=="Analysis":
+    tokenizer = AutoTokenizer.from_pretrained("jkhan447/sarcasm-detection-Bert-base-uncased")
+    model = AutoModelForSequenceClassification.from_pretrained("jkhan447/sarcasm-detection-Bert-base-uncased")
+
+    with st.sidebar:
+        selected = option_menu(
+        menu_title = "Main Menu",
+        options = ["Home","Analysis"],
+        icons = ["house","activity"],
+        menu_icon = "cast",
+        default_index = 0,
+        #orientation = "horizontal",
+        )  
+
+    if selected=="Home":
+        main_page()
+    if selected=="Analysis":
         with open('Untitled1.md', 'r', encoding='utf-8') as f:
             html_string = f.read()
 
