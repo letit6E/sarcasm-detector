@@ -1,3 +1,4 @@
+PyTorch
 transformers
 streamlit
 streamlit_option_menu
