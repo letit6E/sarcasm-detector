@@ -1,15 +1,11 @@
 class SarcasmClassifier:
-    def __init__(self, model, tokenizer):
-        self.model = model
-        self.tokenizer = tokenizer
+    def __init__(self, pipe):
+        self.pipe = pipe
 
     @classmethod
-    def from_hf(cls, name):
-        from transformers import AutoTokenizer, AutoModelForSequenceClassification
-        return cls(
-            AutoModelForSequenceClassification.from_pretrained(name),
-            AutoTokenizer.from_pretrained(name)
-        )
+    def from_hf(cls, task, name):
+        from transformers import pipeline
+        return cls(pipeline(task, model=name))
         
     def __preprocess(self, text):
         new_text = []
@@ -20,7 +16,5 @@ class SarcasmClassifier:
         return ' '.join(new_text)
 
     def predict(self, text):
-        tokenized_text = tokenizer([preprocess(text)], padding=True, truncation=True, max_length=4096, return_tensors="pt")
-        output = model(**tokenized_text)
-        probs = output.logits.softmax(dim=-1).tolist()[0]
-        return probs[0] < 0.5
+        preprocessed_text = self.__preprocess(text)
+        return pipe(preprocessed_text)[0]['label'] == "LABEL_1"
