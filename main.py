@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 from streamlit_extras.badges import badge
-from sarcasm_classifier import SarcasmClassifier
+from classifiers.sarcasm_classifier import SarcasmClassifier
 
 def main_page(classifier):
     st.subheader("Main page")
