@@ -40,7 +40,8 @@ def eda_page():
 
         # Загрузка примера данных
          df = sns.load_dataset('titanic')
-
+         
+         st.write(df.describe())
          st.write(df)
          st.markdown("## Гистограммы")
          for col in ['age', 'fare']:
@@ -78,7 +79,10 @@ def main():
    if selected=="Home":
        main_page()
    if selected=="Analysis":
-       eda_page()
+        with open('Untitled1.md', 'r', encoding='utf-8') as f:
+            html_string = f.read()
+
+        st.markdown(html_string, unsafe_allow_html=True)
 
 
 if __name__ == '__main__':
