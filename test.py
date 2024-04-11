@@ -6,6 +6,8 @@ from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
 from bokeh.io import output_file, show
+import time, random
+from streamlit_option_menu import option_menu
 
 # Функция для предупреждения о радости
 def ballons():
@@ -14,17 +16,26 @@ def ballons():
 PAGE_CONFIGURATION = {"page_title":"Моя 2-страницная страница","page_icon":":smile:","layout":"centered"}
 st.set_page_config(**PAGE_CONFIGURATION)
 
-def main():
+def detect_sarcasm(text):
+    """
+    Mock detector
+    """
+    time.sleep(2)
+    return random.choice([True, False])
 
-    st.sidebar.title('Меню')
-    if st.sidebar.button('Главная'):
-        st.subheader("Главная")
-        your_text = st.text_input("Введите текст", "")
-        if st.button("Отправить"):
-            st.write("Ваш текст: ", your_text)
-            ballons()
+def main_page():
+      st.subheader("Главная")
+      text = st.text_area("Enter the text to analyze:")
+      if st.button("Analyze"):
+         with st.spinner("Processing..."):
+            result = detect_sarcasm(text)
+            st.balloons()
+            if result:
+                  st.success("Sarcasm detected!")
+            else:
+                  st.error("Sarcam is not detected!")
 
-    if st.sidebar.button("Страница EDA"):
+def eda_page():
          st.subheader("Страница EDA")
 
         # Загрузка примера данных
@@ -52,6 +63,22 @@ def main():
          fig, ax = plt.subplots()
          ax = sns.countplot(data=df, x='sex', hue='survived')
          st.pyplot(fig)
+
+def main():
+   with st.sidebar:
+    selected = option_menu(
+    menu_title = "Main Menu",
+    options = ["Home","Analysis"],
+    icons = ["house","activity"],
+    menu_icon = "cast",
+    default_index = 0,
+    #orientation = "horizontal",
+   )  
+
+   if selected=="Home":
+       main_page()
+   if selected=="Analysis":
+       eda_page()
 
 
 if __name__ == '__main__':
