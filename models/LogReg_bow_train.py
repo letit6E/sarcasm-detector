@@ -25,5 +25,3 @@ def LogReg_bow_train() -> int:
     LogReg_bow_model_path = get_file_path('LogReg_bow_model.pkl')
     with open(LogReg_bow_model_path, 'wb') as f:
         dill.dump(LogReg_bow, f)
-
-

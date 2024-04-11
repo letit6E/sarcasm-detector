@@ -79,8 +79,5 @@ def make_train_test(path: str):
     y_train.to_csv(y_train_path)
     y_test.to_csv(y_test_path)
 
-    X_train = pd.read_csv(X_train_path)
-    y_train = pd.read_csv(y_train_path)
-    second_X_train = X_train['comment'].tolist()
 
 make_train_test('sarcasm_dataset.csv')

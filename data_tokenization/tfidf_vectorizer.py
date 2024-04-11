@@ -7,8 +7,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from all_data.get_path import get_file_path
 from data_tokenization.data_tokenizer import my_tokenizer
 
-#nltk.download('stopwords')
-
 
 def create_tfidf_vectorizer():
     tfidf_vectorizer = TfidfVectorizer(tokenizer=my_tokenizer,

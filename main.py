@@ -1,12 +1,8 @@
 import streamlit as st
-import random
-import time
-
 from models.LogReg_bow_pred import LogReg_bow_pred
 
 
 def detect_sarcasm(text):
-
     return LogReg_bow_pred(text)
 
 

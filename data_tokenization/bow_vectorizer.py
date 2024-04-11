@@ -1,13 +1,10 @@
 import dill
-import nltk
 import pandas as pd
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer
 
 from all_data.get_path import get_file_path
 from data_tokenization.data_tokenizer import my_tokenizer
-
-nltk.download('stopwords')
 
 
 def create_bow_vectorizer():
