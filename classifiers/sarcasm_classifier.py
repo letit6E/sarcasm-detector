@@ -17,4 +17,4 @@ class SarcasmClassifier:
 
     def predict(self, text):
         preprocessed_text = self.__preprocess(text)
-        return pipe(preprocessed_text)[0]['label'] == "LABEL_1"
+        return self.pipe(preprocessed_text)[0]['label'] == "LABEL_1"
