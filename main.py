@@ -29,7 +29,10 @@ def main():
         "layout": "centered"
     }
     st.set_page_config(**PAGE_CONFIGURATION)
-    classifier = SarcasmClassifier.from_hf("jkhan447/sarcasm-detection-Bert-base-uncased")
+    classifier = SarcasmClassifier.from_hf(
+        "text-classification", 
+        "jkhan447/sarcasm-detection-Bert-base-uncased"
+    )
     
     with st.sidebar:
         selected = option_menu(
