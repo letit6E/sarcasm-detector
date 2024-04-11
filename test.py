@@ -32,12 +32,12 @@ def detect_sarcasm(text, model, tokenizer):
     prediction = 1 if probs[0] < 0.5 else 0
     return bool(prediction)
 
-def main_page():
+def main_page(model, tokenizer):
       st.subheader("Главная")
       text = st.text_area("Enter the text to analyze:")
       if st.button("Analyze"):
          with st.spinner("Processing..."):
-            result = detect_sarcasm(text)
+            result = detect_sarcasm(text, model, tokenizer)
             st.balloons()
             if result:
                   st.success("Sarcasm detected!")
@@ -92,7 +92,7 @@ def main():
         )  
 
     if selected=="Home":
-        main_page()
+        main_page(model, tokenizer)
     if selected=="Analysis":
         with open('Untitled1.md', 'r', encoding='utf-8') as f:
             html_string = f.read()
