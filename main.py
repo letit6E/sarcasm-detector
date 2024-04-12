@@ -22,7 +22,7 @@ def about_page():
     
     st.markdown(html_string, unsafe_allow_html=True)
 
-@st.cache
+@st.cache_data
 def load_model(name):
     classifier = SarcasmClassifier.from_hf(name)
     return classifier
