@@ -30,7 +30,6 @@ def main():
     }
     st.set_page_config(**PAGE_CONFIGURATION)
     classifier = SarcasmClassifier.from_hf(
-        "text-classification", 
         "jkhan447/sarcasm-detection-Bert-base-uncased"
     )
     
@@ -43,9 +42,9 @@ def main():
             default_index = 0
         )  
     
-    if selected=="Home":
+    if selected == "Home":
         main_page(classifier)
-    if selected=="About":
+    if selected == "About":
         about_page()
 
 
