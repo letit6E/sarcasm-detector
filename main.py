@@ -3,10 +3,6 @@ from streamlit_option_menu import option_menu
 from streamlit_extras.badges import badge
 from classifiers.sarcasm_classifier import SarcasmClassifier
 
-@st.cache_resource
-def predict_model(model, text):
-    return model.predict(text)
-
 @st.cache_data
 def load_model():
     return SarcasmClassifier.from_hf(
@@ -14,13 +10,18 @@ def load_model():
         "jkhan447/sarcasm-detection-Bert-base-uncased"
     )
 
+classifier = load_model()
 
-def main_page(classifier):
+@st.cache_resource
+def predict_model(text):
+    return classifier.predict(text)
+
+def main_page():
     st.subheader("Main page")
     text = st.text_area("Enter the text to analyze:")
     if st.button("Analyze"):
      with st.spinner("Processing..."):
-        result = predict_model(classifier, text)
+        result = predict_model(text)
         st.balloons()
         if result:
               st.success("Sarcasm detected!")
@@ -42,7 +43,6 @@ def main():
         "layout": "centered"
     }
     st.set_page_config(**PAGE_CONFIGURATION)
-    classifier = load_model()
     
     with st.sidebar:
         selected = option_menu(
