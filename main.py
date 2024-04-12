@@ -20,7 +20,7 @@ def main_page(classifier):
     text = st.text_area("Enter the text to analyze:")
     if st.button("Analyze"):
      with st.spinner("Processing..."):
-        result = predict(classifier, text)
+        result = predict_model(classifier, text)
         st.balloons()
         if result:
               st.success("Sarcasm detected!")
