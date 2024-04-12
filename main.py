@@ -3,6 +3,13 @@ from streamlit_option_menu import option_menu
 from streamlit_extras.badges import badge
 from classifiers.sarcasm_classifier import SarcasmClassifier
 
+PAGE_CONFIGURATION = {
+        "page_title": "Sarcasm Detector",
+        "page_icon": ":smile:",
+        "layout": "centered"
+    }
+st.set_page_config(**PAGE_CONFIGURATION)
+
 @st.cache_data
 def load_model():
     return SarcasmClassifier.from_hf(
@@ -37,13 +44,6 @@ def about_page():
 
 
 def main():
-    PAGE_CONFIGURATION = {
-        "page_title": "Sarcasm Detector",
-        "page_icon": ":smile:",
-        "layout": "centered"
-    }
-    st.set_page_config(**PAGE_CONFIGURATION)
-    
     with st.sidebar:
         selected = option_menu(
             menu_title = "Main Menu",
