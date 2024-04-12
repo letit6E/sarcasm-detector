@@ -54,7 +54,7 @@ def main():
         )  
     
     if selected == "Home":
-        main_page(classifier)
+        main_page()
     if selected == "About":
         about_page()
 
