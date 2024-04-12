@@ -22,6 +22,11 @@ def about_page():
     
     st.markdown(html_string, unsafe_allow_html=True)
 
+@st.cache
+def load_model(name):
+    classifier = SarcasmClassifier.from_hf(name)
+    return classifier
+
 def main():
     PAGE_CONFIGURATION = {
         "page_title": "Sarcasm Detector",
@@ -29,9 +34,7 @@ def main():
         "layout": "centered"
     }
     st.set_page_config(**PAGE_CONFIGURATION)
-    classifier = SarcasmClassifier.from_hf(
-        "jkhan447/sarcasm-detection-Bert-base-uncased"
-    )
+    classifier = load_model("jkhan447/sarcasm-detection-Bert-base-uncased")
     
     with st.sidebar:
         selected = option_menu(
