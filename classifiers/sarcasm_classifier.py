@@ -20,7 +20,7 @@ class SarcasmClassifier:
         return ' '.join(new_text)
 
     def predict(self, text):
-        tokenized_text = tokenizer([preprocess(text)], padding=True, truncation=True, max_length=4096, return_tensors="pt")
-        output = model(**tokenized_text)
+        tokenized_text = self.tokenizer([self.__preprocess(text)], padding=True, truncation=True, max_length=4096, return_tensors="pt")
+        output = self.model(**tokenized_text)
         probs = output.logits.softmax(dim=-1).tolist()[0]
         return probs[0] < 0.5
